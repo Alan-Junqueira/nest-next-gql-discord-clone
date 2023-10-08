@@ -1,4 +1,12 @@
-import { ClerkProvider } from "@clerk/nextjs";
+import {
+  ClerkProvider,
+  SignedIn,
+  SignedOut,
+  RedirectToSignIn,
+  UserButton,
+} from "@clerk/nextjs";
+import Link from "next/link";
+
 import { ReactNode } from "react";
 
 interface IProviders {
@@ -6,5 +14,14 @@ interface IProviders {
 }
 
 export const Providers = ({ children }: IProviders) => {
-  return <ClerkProvider>{children}</ClerkProvider>;
+  return (
+    <ClerkProvider>
+      {/* <SignedIn> */}
+      {children}
+      {/* </SignedIn> */}
+      {/* <SignedOut> */}
+      {/* <RedirectToSignIn /> */}
+      {/* </SignedOut> */}
+    </ClerkProvider>
+  );
 };
