@@ -1,8 +1,5 @@
 {
-  "extends": [
-    "next/core-web-vitals",
-    "prettier"
-  ],
+  "extends": ["next/core-web-vitals", "prettier"],
   "plugins": ["prettier", "eslint-plugin-import-helpers"],
   "rules": {
     "camelcase": "off",

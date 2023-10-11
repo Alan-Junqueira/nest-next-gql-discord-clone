@@ -1,7 +1,6 @@
 "use client";
 
 import { Inter } from "next/font/google";
-import { Sidebar } from "@/components/partials/Sidebar";
 import { useDarkModeStore } from "@/store/darkModeStore";
 
 import "./globals.css";
@@ -20,10 +19,7 @@ export default function RootLayout({
       <body
         className={`${inter.className} h-screen w-screen bg-gray-100 dark:bg-neutral-900`}
       >
-        <div>
-          <Sidebar />
-          {children}
-        </div>
+        <div>{children}</div>
       </body>
     </html>
   );
