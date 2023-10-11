@@ -1,3 +1,5 @@
+"use client";
+
 import { TModal, useGeneralStore } from "@/store/generalStore";
 
 export const useModal = (modalType: TModal) => {

@@ -29,6 +29,15 @@ export const useGeneralStore = create<IGeneralStore>()(
     }),
     {
       name: "generalStore",
+      merge: (persistedState: unknown, initial: IGeneralStore) => {
+        const persisted = persistedState as IGeneralStore;
+        return {
+          ...initial,
+          state: initial.state
+            ? { ...initial.state, modal: persisted.state.modal }
+            : persisted.state,
+        };
+      },
     },
   ),
 );
