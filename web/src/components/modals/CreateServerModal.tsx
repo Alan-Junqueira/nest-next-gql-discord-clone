@@ -35,9 +35,12 @@ export const CreateServerModal = () => {
         onClickAtCloseButton={closeModal}
       >
         <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
+          <DialogTitle className="text-gray-900 dark:text-gray-100 font-normal mb-4">
+            Create a server
+          </DialogTitle>
           <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
+            Give your server personality with a name and an image. You can
+            always change it later
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
