@@ -26,7 +26,7 @@ const createServerSchema = z.object({
 export const CreateServerModal = () => {
   const { isOpen, closeModal, openModal } = useModal("CreateServer");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [file, setFile] = useState<File | null>(null);
+  const [files, setFiles] = useState<File[]>([]);
 
   return (
     <Dialog open={isOpen}>
@@ -86,7 +86,7 @@ export const CreateServerModal = () => {
             <input id="dropzone-file" type="file" className="hidden" />
           </label>
         </div> */}
-        <FileInput file={file} setFile={setFile} />
+        <FileInput files={files} setFiles={setFiles} />
         <AutoForm
           formSchema={createServerSchema}
           onSubmit={() => {}}

@@ -3,31 +3,38 @@ import { ComponentProps, useCallback, useState } from "react";
 import { DropzoneState, useDropzone } from "react-dropzone";
 
 interface IFileInputProps extends ComponentProps<"div"> {
-  file: File | null;
-  setFile: (file: File | null) => void;
+  files: File[] | null;
+  setFiles: (files: File[]) => void;
 }
 
 export const FileInput = ({
-  file,
-  setFile,
+  files,
+  setFiles,
   className,
   ...props
 }: IFileInputProps) => {
-  const removeFile = useCallback(() => {
-    setFile(null);
-  }, [file]);
+  const removeFile = useCallback(
+    (name: string) => {
+      if (files && files.length) {
+        const filteredFiles = files.filter((file) => {
+          return file.name !== name;
+        });
+        setFiles(filteredFiles);
+      }
+    },
+    [files],
+  );
 
   const handleDrop = useCallback(
     (files: File[]) => {
       console.log(files);
-      setFile(files[0]);
+      setFiles(files);
     },
-    [file],
+    [files],
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: handleDrop,
-    maxFiles: 1,
     accept: {
       "application/pdf": [".pdf"],
       "image/png": [".png"],
@@ -51,24 +58,29 @@ export const FileInput = ({
 
   return (
     <>
-      {file ? (
-        <div className="flex h-full w-full items-center justify-center rounded-lg border-4 border-dashed border-gray-600 bg-gray-300 dark:bg-neutral-700 dark:hover:bg-neutral-600 p-4">
-          <div className="flex w-full items-center justify-center gap-3 rounded-md bg-white shadow-md">
-            <FileIcon className="my-4 ml-4 h-5 w-5" />
-            <span className="my-4 text-sm text-gray-500">{file?.name}</span>
-            <button
-              type="button"
-              onClick={removeFile}
-              className="mt-1 place-self-start p-1"
+      {files?.length ? (
+        <div className="flex h-full w-full flex-col gap-2 rounded-lg border-4 border-dashed border-gray-600 bg-gray-300 p-4 dark:bg-neutral-700 dark:hover:bg-neutral-600">
+          {files.map((file, index) => (
+            <div
+              className="flex w-full items-center justify-center gap-3 rounded-md bg-white shadow-md"
+              key={index}
             >
-              <X className="h-5 w-5" />
-            </button>
-          </div>
+              <FileIcon className="my-4 ml-4 h-5 w-5" />
+              <span className="my-4 text-sm text-gray-500">{file?.name}</span>
+              <button
+                type="button"
+                onClick={() => removeFile(file.name)}
+                className="mt-1 place-self-start p-1"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+          ))}
         </div>
       ) : (
         <div
           {...getRootProps()}
-          className={`h-full w-full rounded-lg border-4 border-dashed bg-gray-300 transition-all hover:border-gray-500 hover:bg-gray-200 dark:bg-neutral-700 dark:hover:bg-neutral-600
+          className={`h-full w-full rounded-lg border-4 border-dashed bg-gray-200 transition-all hover:border-gray-500 hover:bg-gray-300 dark:bg-neutral-700 dark:hover:bg-neutral-600
         ${isDragActive ? "border-blue-500" : "border-gray-600"}`}
         >
           <label
@@ -88,11 +100,15 @@ export const FileInput = ({
                   Drop to add...
                 </p>
               ) : (
-                <>
-                  <p className="mb-2 text-lg text-gray-900 dark:text-gray-100">
-                    Drag images here or click to select files
+                <div className="flex flex-col items-center justify-center gap-1">
+                  <p className="text-lg text-gray-900 dark:text-gray-100">
+                    Drag files here or click to select files
                   </p>
-                </>
+                  <p className="text-center text-xs text-gray-900 dark:text-gray-100">
+                    .pdf, .png, .jpeg, .jpg, .svg, .webp, .xls, .xlsx, .doc,
+                    .docx, .ppt, .pptx, .txt, .csv
+                  </p>
+                </div>
               )}
             </div>
           </label>
