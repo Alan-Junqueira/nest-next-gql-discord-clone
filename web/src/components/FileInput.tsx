@@ -5,11 +5,13 @@ import { DropzoneState, useDropzone } from "react-dropzone";
 interface IFileInputProps extends ComponentProps<"div"> {
   files: File[] | null;
   setFiles: (files: File[]) => void;
+  setImagePreview: (imagePreview: string | null) => void;
 }
 
 export const FileInput = ({
   files,
   setFiles,
+  setImagePreview,
   className,
   ...props
 }: IFileInputProps) => {
@@ -27,32 +29,43 @@ export const FileInput = ({
 
   const handleDrop = useCallback(
     (files: File[]) => {
-      console.log(files);
       setFiles(files);
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImagePreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(files[0]);
     },
     [files],
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: handleDrop,
+    maxFiles: 1,
+    onDropRejected: (files, event) => {
+      if (files.length >= 2) {
+        alert("You can only upload one file at a time");
+      }
+    },
     accept: {
-      "application/pdf": [".pdf"],
+      // "application/pdf": [".pdf"],
       "image/png": [".png"],
       "image/jpeg": [".jpeg", ".jpg"],
       "image/svg+xml": [".svg"],
       "image/webp": [".webp"],
-      "application/vnd.ms-excel": [".xls"],
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [
-        ".xlsx",
-      ],
-      "application/msword": [".doc"],
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-        [".docx"],
-      "application/vnd.ms-powerpoint": [".ppt"],
-      "application/vnd.openxmlformats-officedocument.presentationml.presentation":
-        [".pptx"],
-      "text/plain": [".txt"],
-      "text/csv": [".csv"],
+      // "application/vnd.ms-excel": [".xls"],
+      // "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [
+      //   ".xlsx",
+      // ],
+      // "application/msword": [".doc"],
+      // "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+      //   [".docx"],
+      // "application/vnd.ms-powerpoint": [".ppt"],
+      // "application/vnd.openxmlformats-officedocument.presentationml.presentation":
+      //   [".pptx"],
+      // "text/plain": [".txt"],
+      // "text/csv": [".csv"],
     },
   });
 
@@ -105,8 +118,7 @@ export const FileInput = ({
                     Drag files here or click to select files
                   </p>
                   <p className="text-center text-xs text-gray-900 dark:text-gray-100">
-                    .pdf, .png, .jpeg, .jpg, .svg, .webp, .xls, .xlsx, .doc,
-                    .docx, .ppt, .pptx, .txt, .csv
+                    .png, .jpeg, .jpg, .svg, .webp
                   </p>
                 </div>
               )}
