@@ -28,6 +28,7 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/serve-static": "^4.0.0",
     "@prisma/client": "5.4.2",
+    "class-validator": "^0.14.0",
     "graphql": "^16.8.1",
     "graphql-upload": "^14.0.0",
     "reflect-metadata": "^0.1.13",
