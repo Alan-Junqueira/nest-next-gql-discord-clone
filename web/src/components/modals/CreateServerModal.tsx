@@ -29,6 +29,8 @@ export const CreateServerModal = () => {
   const { isOpen, closeModal, openModal } = useModal("CreateServer");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [files, setFiles] = useState<File[]>([]);
+  const [autoFormParsedValues, setAutoFormParsedValues] = useState<any>();
+  const [autoFormValues, setAutoFormValues] = useState<any>();
 
   const handleRemovePreviewImage = () => {
     setImagePreview(null);
@@ -85,6 +87,12 @@ export const CreateServerModal = () => {
         )}
         <AutoForm
           formSchema={createServerSchema}
+          onValuesChange={(values) => {
+            setAutoFormValues(values);
+          }}
+          onParsedValuesChange={(values) => {
+            setAutoFormParsedValues(values);
+          }}
           onSubmit={(e) => {
             console.log(e);
           }}
@@ -97,13 +105,17 @@ export const CreateServerModal = () => {
             },
           }}
         >
-          <Button type="submit" className="w-4/12">
+          <Button
+            type="submit"
+            className="w-4/12 bg-gradient-to-r from-sky-700 to-sky-500 text-white disabled:cursor-not-allowed dark:text-white "
+            disabled={
+              JSON.stringify(autoFormParsedValues) !==
+                JSON.stringify(autoFormValues) || !files.length
+            }
+          >
             Create Server
           </Button>
         </AutoForm>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
