@@ -1,4 +1,4 @@
-import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Profile } from '../profile/profile.type';
 import { Member } from '../member/member.types';
 
@@ -38,7 +38,7 @@ registerEnumType(ChannelType, {
 
 @ObjectType()
 export class Server {
-  @Field()
+  @Field(() => ID)
   id: string;
 
   @Field()
