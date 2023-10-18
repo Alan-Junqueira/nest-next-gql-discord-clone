@@ -1,6 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Profile } from './profile.type';
-import { createProfileDTO } from './dtos/createProfileDTO';
+import { CreateProfileDTO } from './dtos/CreateProfileDTO';
 import { ProfileService } from './profile.service';
 import { UseGuards } from '@nestjs/common';
 import { GraphqlAuthGuard } from 'src/auth/auth.guard';
@@ -11,7 +11,7 @@ export class ProfileResolver {
 
   @UseGuards(GraphqlAuthGuard)
   @Mutation(() => Profile)
-  async createProfile(@Args('input') input: createProfileDTO) {
+  async createProfile(@Args('input') input: CreateProfileDTO) {
     return this.profileService.createProfile(input);
   }
 

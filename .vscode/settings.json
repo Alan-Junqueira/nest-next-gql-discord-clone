@@ -1,5 +1,5 @@
 {
-  "cSpell.words": ["dtos", "splitlink", "websockets"],
+  "cSpell.words": ["Codegen", "dtos", "splitlink", "websockets", "zustand"],
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#2f5b89",
     "activityBar.background": "#2f5b89",

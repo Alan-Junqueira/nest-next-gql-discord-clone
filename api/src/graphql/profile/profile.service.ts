@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { createProfileDTO } from './dtos/createProfileDTO';
 import { PrismaService } from 'src/database/prisma/prisma.service';
+import { CreateProfileDTO } from './dtos/CreateProfileDTO';
 
 @Injectable()
 export class ProfileService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createProfile(data: createProfileDTO) {
+  async createProfile(data: CreateProfileDTO) {
     const existingProfile = await this.prisma.profile.findUnique({
       where: {
         email: data.email,

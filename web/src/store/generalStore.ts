@@ -28,7 +28,7 @@ export const useGeneralStore = create<IGeneralStore>()(
       },
     }),
     {
-      name: "generalStore",
+      name: "gql-chat:generalStore",
       merge: (persistedState: unknown, initial: IGeneralStore) => {
         const persisted = persistedState as IGeneralStore;
         return {

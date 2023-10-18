@@ -18,6 +18,12 @@ enum ChannelType {
   VIDEO
 }
 
+input CreateProfileDTO {
+  email: String!
+  imageUrl: String!
+  name: String!
+}
+
 type Member {
   createdAt: String
   email: String
@@ -39,7 +45,7 @@ enum MemberRole {
 }
 
 type Mutation {
-  createProfile(input: createProfileDTO!): Profile!
+  createProfile(input: CreateProfileDTO!): Profile!
 }
 
 type Profile {
@@ -66,10 +72,4 @@ type Server {
   name: String!
   profile: Profile
   profileId: Float!
-}
-
-input createProfileDTO {
-  email: String!
-  imageUrl: String!
-  name: String!
 }
