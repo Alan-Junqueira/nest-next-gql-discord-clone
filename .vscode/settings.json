@@ -1,3 +1,23 @@
 {
-  "cSpell.words": ["dtos"]
+  "cSpell.words": ["dtos", "splitlink", "websockets"],
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#2f5b89",
+    "activityBar.background": "#2f5b89",
+    "activityBar.foreground": "#e7e7e7",
+    "activityBar.inactiveForeground": "#e7e7e799",
+    "activityBarBadge.background": "#47182f",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "commandCenter.border": "#e7e7e799",
+    "sash.hoverBorder": "#2f5b89",
+    "statusBar.background": "#224263",
+    "statusBar.foreground": "#e7e7e7",
+    "statusBarItem.hoverBackground": "#2f5b89",
+    "statusBarItem.remoteBackground": "#224263",
+    "statusBarItem.remoteForeground": "#e7e7e7",
+    "titleBar.activeBackground": "#224263",
+    "titleBar.activeForeground": "#e7e7e7",
+    "titleBar.inactiveBackground": "#22426399",
+    "titleBar.inactiveForeground": "#e7e7e799"
+  },
+  "peacock.remoteColor": "#224263"
 }

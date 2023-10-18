@@ -3,6 +3,10 @@
 import { Inter } from "next/font/google";
 import { useDarkModeStore } from "@/store/darkModeStore";
 
+import { ApolloProvider } from "@apollo/client";
+
+import { apolloClient } from "@/lib/apollo-client";
+
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -19,7 +23,9 @@ export default function RootLayout({
       <body
         className={`${inter.className} h-screen w-screen bg-gray-100 dark:bg-neutral-900`}
       >
-        <div>{children}</div>
+        <div>
+          <ApolloProvider client={apolloClient}>{children}</ApolloProvider>
+        </div>
       </body>
     </html>
   );
