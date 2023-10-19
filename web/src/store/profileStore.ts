@@ -27,7 +27,7 @@ export const useProfileStore = create<IProfileStore>()(
       },
     }),
     {
-      name: "gql-chat:profileStore",
+      name: "profileStore",
       merge: (persistedState: unknown, initial: IProfileStore) => {
         const persisted = persistedState as IProfileStore;
         return {

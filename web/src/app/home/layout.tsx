@@ -21,7 +21,7 @@ const HomeLayout = async ({ children }: LayoutProps) => {
     <>
       {session ? (
         <Container>
-          <Sidebar />
+          <Sidebar session={session} />
           {children}
         </Container>
       ) : (

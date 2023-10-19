@@ -21,16 +21,16 @@ export class GraphqlAuthGuard implements CanActivate {
       throw new UnauthorizedException('Not authorized!');
     }
 
-    try {
-      const payload = await this.jwt.verifyAsync(token, {
-        publicKey: process.env.JWT_PUBLIC_KEY,
-        algorithms: ['RS256'],
-      });
+    // try {
+    //   const payload = await this.jwt.verifyAsync(token, {
+    //     publicKey: process.env.JWT_PUBLIC_KEY,
+    //     algorithms: ['RS256'],
+    //   });
 
-      request['profile'] = payload;
-    } catch (error) {
-      throw new UnauthorizedException('Not authorized!');
-    }
+    //   request['profile'] = payload;
+    // } catch (error) {
+    //   throw new UnauthorizedException('Not authorized!');
+    // }
 
     return true;
   }

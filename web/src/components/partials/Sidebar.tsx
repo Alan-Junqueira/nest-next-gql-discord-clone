@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { ComponentProps, useEffect } from "react";
 import { Button } from "../ui/button";
 import {
   IconArrowsJoin,
@@ -9,14 +9,74 @@ import {
 } from "@tabler/icons-react";
 import { useDarkModeStore } from "@/store/darkModeStore";
 import { CreateServerModal } from "../modals/CreateServerModal";
+import { useProfileStore } from "@/store/profileStore";
+import { useMutation } from "@apollo/client";
+import {
+  CreateProfileMutation,
+  CreateProfileMutationVariables,
+} from "@/graphql/types/graphql";
+import { CREATE_PROFILE } from "@/graphql/mutations/CreateProfile";
+import { Session } from "next-auth";
+import { cn } from "@/lib/utils";
 
-export const Sidebar = () => {
+interface ISidebarProps extends ComponentProps<"nav"> {
+  session: Session | null;
+}
+
+export const Sidebar = ({ session, className, ...props }: ISidebarProps) => {
   const [darkMode, toggleDarkMode] = useDarkModeStore((store) => [
     store.state.darkMode,
     store.actions.toggleDarkMode,
   ]);
+
+  const [profile, setProfile] = useProfileStore((state) => [
+    state.state.profile,
+    state.actions.setProfile,
+  ]);
+
+  const [createProfile] = useMutation<
+    CreateProfileMutation,
+    CreateProfileMutationVariables
+  >(CREATE_PROFILE, {});
+
+  useEffect(() => {
+    const createProfileFn = async () => {
+      if (!session?.user) return;
+      try {
+        await createProfile({
+          context: {
+            headers: {
+              "authorization": `Bearer anyway`,
+            }
+          },
+          variables: {
+            input: {
+              email: session.user?.email ?? "",
+              name: session.user?.name ?? "",
+              imageUrl: session.user.image ?? "",
+            },
+          },
+          onCompleted: (data) => {
+            setProfile(data.createProfile);
+          },
+        });
+      } catch (error) {
+        console.error("Sidebar --> createProfile error", error);
+      }
+    };
+
+    if (profile?.id) return;
+    createProfileFn();
+  }, []);
+
   return (
-    <nav className="fixed bottom-0 left-0 top-0 flex h-screen w-20 flex-col bg-gray-300 py-4 dark:bg-neutral-800">
+    <nav
+      {...props}
+      className={cn(
+        "fixed bottom-0 left-0 top-0 flex h-screen w-20 flex-col bg-gray-300 py-4 dark:bg-neutral-800",
+        className,
+      )}
+    >
       <div className="mb-2 flex w-full items-center justify-center">
         <CreateServerModal />
       </div>
