@@ -44,11 +44,11 @@ export const Sidebar = ({ session, className, ...props }: ISidebarProps) => {
       if (!session?.user) return;
       try {
         await createProfile({
-          context: {
-            headers: {
-              "authorization": `Bearer anyway`,
-            }
-          },
+          // context: {
+          //   headers: {
+          //     "authorization": `Bearer anyway`,
+          //   }
+          // },
           variables: {
             input: {
               email: session.user?.email ?? "",

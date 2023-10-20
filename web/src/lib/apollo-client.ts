@@ -15,7 +15,6 @@ const getCookie = (name: string) => {
 
   if (parts.length === 2) return parts.pop()?.split(";").shift();
 };
-
 const authLink = setContext(async (_, { headers }) => {
   const token = getCookie("next-auth.session-token");
 
