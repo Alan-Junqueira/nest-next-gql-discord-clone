@@ -1,12 +1,7 @@
 "use client";
 import React, { ComponentProps, useEffect } from "react";
 import { Button } from "../ui/button";
-import {
-  IconArrowsJoin,
-  IconMoon,
-  IconPlus,
-  IconSun,
-} from "@tabler/icons-react";
+import { IconArrowsJoin, IconMoon, IconSun } from "@tabler/icons-react";
 import { useDarkModeStore } from "@/store/darkModeStore";
 import { CreateServerModal } from "../modals/CreateServerModal";
 import { useProfileStore } from "@/store/profileStore";
@@ -40,6 +35,12 @@ export const Sidebar = ({ session, className, ...props }: ISidebarProps) => {
   >(CREATE_PROFILE, {});
 
   useEffect(() => {
+    if (!session) {
+      setProfile(null);
+    }
+  }, [session, setProfile]);
+
+  useEffect(() => {
     const createProfileFn = async () => {
       if (!session?.user) return;
       try {
@@ -67,7 +68,7 @@ export const Sidebar = ({ session, className, ...props }: ISidebarProps) => {
 
     if (profile?.id) return;
     createProfileFn();
-  }, []);
+  }, [session?.user, profile?.id]);
 
   return (
     <nav

@@ -37,7 +37,7 @@ export class Member {
 
 export enum MemberRole {
   MODERATOR = 'MODERATOR',
-  ADMIN = 'MEMBER',
+  ADMIN = 'ADMIN',
   GUEST = 'GUEST',
 }
 

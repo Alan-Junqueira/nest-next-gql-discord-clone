@@ -57,9 +57,10 @@ model Server {
 }
 
 model Member {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now()) @db.Timestamptz(3)
-  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+  id        String      @id @default(uuid())
+  createdAt DateTime    @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime    @updatedAt @db.Timestamptz(3)
+  role      MEMBER_ROLE @default(GUEST)
 
   profileId String @map("profile_id")
   serverId  String @map("server_id")
