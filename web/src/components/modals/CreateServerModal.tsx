@@ -5,7 +5,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -17,6 +16,13 @@ import { z } from "zod";
 import { useState } from "react";
 import { FileInput } from "../FileInput";
 import Image from "next/image";
+import { useMutation } from "@apollo/client";
+import { CREATE_SERVER } from "@/graphql/mutations/server/CreateServer";
+import {
+  CreateServerMutation,
+  CreateServerMutationVariables,
+} from "@/graphql/types/graphql";
+import { useProfileStore } from "@/store/profileStore";
 
 const createServerSchema = z.object({
   name: z
@@ -31,6 +37,38 @@ export const CreateServerModal = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [autoFormParsedValues, setAutoFormParsedValues] = useState<any>();
   const [autoFormValues, setAutoFormValues] = useState<any>();
+
+  const [profileId] = useProfileStore((store) => [store.state.profile?.id]);
+
+  const [createServer, { loading }] = useMutation<
+    CreateServerMutation,
+    CreateServerMutationVariables
+  >(CREATE_SERVER);
+
+  const handleCreateServer = async () => {
+    if (
+      JSON.stringify(autoFormParsedValues) !== JSON.stringify(autoFormValues) ||
+      !files.length ||
+      !profileId
+    )
+      return;
+
+    createServer({
+      variables: {
+        input: {
+          name: autoFormParsedValues.name,
+          profileId,
+        },
+        file: files[0],
+      },
+      onCompleted: (_data) => {
+        setImagePreview(null);
+        setFiles([]);
+        closeModal;
+      },
+      refetchQueries: ["GetServers"],
+    });
+  };
 
   const handleRemovePreviewImage = () => {
     setImagePreview(null);
@@ -93,9 +131,7 @@ export const CreateServerModal = () => {
           onParsedValuesChange={(values) => {
             setAutoFormParsedValues(values);
           }}
-          onSubmit={(e) => {
-            console.log(e);
-          }}
+          onSubmit={handleCreateServer}
           fieldConfig={{
             name: {
               inputProps: {
@@ -110,7 +146,7 @@ export const CreateServerModal = () => {
             className="w-4/12 bg-gradient-to-r from-sky-700 to-sky-500 text-white disabled:cursor-not-allowed dark:text-white "
             disabled={
               JSON.stringify(autoFormParsedValues) !==
-                JSON.stringify(autoFormValues) || !files.length
+                JSON.stringify(autoFormValues) || !files.length || loading
             }
           >
             Create Server

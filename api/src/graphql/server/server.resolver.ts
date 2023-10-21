@@ -55,7 +55,7 @@ export class ServerResolver {
 
   private async storeImageAngGetUrl(file: GraphqlUpload) {
     const { createReadStream, filename } = await file;
-    const fileName = `${randomUUID}-${filename}`;
+    const fileName = `${randomUUID()}-${filename}`;
     const imagePath = join(process.cwd(), 'public', 'images', fileName);
     const imageUrl = `${process.env.API_BASE_URL}/images/${fileName}`;
 
