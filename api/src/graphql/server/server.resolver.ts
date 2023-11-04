@@ -9,7 +9,7 @@ import { CreateServerDTO } from './dtos/CreateServerDTO';
 import * as GraphqlUpload from 'graphql-upload/GraphQLUpload.js';
 import { randomUUID } from 'node:crypto';
 import { join } from 'node:path';
-import { createWriteStream } from 'node:fs';
+import { createWriteStream, existsSync, mkdirSync } from 'node:fs';
 
 @UseGuards(GraphqlAuthGuard)
 @Resolver()
@@ -58,6 +58,10 @@ export class ServerResolver {
     const fileName = `${randomUUID()}-${filename}`;
     const imagePath = join(process.cwd(), 'public', 'images', fileName);
     const imageUrl = `${process.env.API_BASE_URL}/images/${fileName}`;
+
+    if (!existsSync(join(process.cwd(), 'public', 'images'))) {
+      mkdirSync(join(process.cwd(), 'public', 'images'), { recursive: true });
+    }
 
     const stream = createReadStream();
     stream.pipe(createWriteStream(imagePath));
