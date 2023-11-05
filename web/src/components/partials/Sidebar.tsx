@@ -13,6 +13,7 @@ import {
 import { CREATE_PROFILE } from "@/graphql/mutations/CreateProfile";
 import { Session } from "next-auth";
 import { cn } from "@/lib/utils";
+import { useServers } from "@/hooks/graphql/server/useServers";
 
 interface ISidebarProps extends ComponentProps<"nav"> {
   session: Session | null;
@@ -23,6 +24,9 @@ export const Sidebar = ({ session, className, ...props }: ISidebarProps) => {
     store.state.darkMode,
     store.actions.toggleDarkMode,
   ]);
+
+  const { servers, loading: serversLoading } = useServers();
+  console.log(servers);
 
   const [profile, setProfile] = useProfileStore((state) => [
     state.state.profile,

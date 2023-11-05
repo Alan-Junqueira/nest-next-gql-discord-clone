@@ -1,6 +1,6 @@
-import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Server } from './server.types';
-import { Request } from 'express';
+// import { Request } from 'express';
 import { GraphQLError } from 'graphql';
 import { UseGuards } from '@nestjs/common';
 import { GraphqlAuthGuard } from 'src/auth/auth.guard';
@@ -19,9 +19,11 @@ export class ServerResolver {
   @Query(() => [Server])
   async getServers(
     @Args('profileId') profileId: string,
-    @Context() ctx: { req: Request },
+    @Args('email') email: string,
+    // @Context() ctx: { req: Request },
   ) {
-    if (!ctx.req?.profile?.email) {
+    // if (!ctx.req?.profile?.email) {
+    if (!email) {
       return new GraphQLError('Profile not found', {
         extensions: {
           code: 'PROFILE_NOT_FOUND',
@@ -29,9 +31,7 @@ export class ServerResolver {
       });
     }
 
-    const servers = this.serverService.getServersByProfileEmailOfMember(
-      ctx.req.profile.email,
-    );
+    const servers = this.serverService.getServersByProfileEmailOfMember(email);
 
     return servers;
   }
