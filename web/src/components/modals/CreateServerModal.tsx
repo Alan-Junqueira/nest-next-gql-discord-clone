@@ -40,7 +40,7 @@ export const CreateServerModal = () => {
 
   const [profileId] = useProfileStore((store) => [store.state.profile?.id]);
 
-  const [createServer, { loading }] = useMutation<
+  const [createServer, { loading, error }] = useMutation<
     CreateServerMutation,
     CreateServerMutationVariables
   >(CREATE_SERVER);
@@ -64,7 +64,7 @@ export const CreateServerModal = () => {
       onCompleted: (_data) => {
         setImagePreview(null);
         setFiles([]);
-        closeModal;
+        closeModal();
       },
       refetchQueries: ["GetServers"],
     });
@@ -114,13 +114,14 @@ export const CreateServerModal = () => {
             >
               <IconX className="h-6 w-6 dark:text-white" />
             </Button>
-            <Image
-              src={imagePreview}
-              alt="Preview"
-              width={150}
-              height={150}
-              className="rounded-full"
-            />
+            <div className="relative h-36 w-36 overflow-hidden rounded-full">
+              <Image
+                src={imagePreview}
+                alt="Preview"
+                fill
+                className="object-cover"
+              />
+            </div>
           </div>
         )}
         <AutoForm
@@ -141,12 +142,17 @@ export const CreateServerModal = () => {
             },
           }}
         >
+          {error && (
+            <p className="mt-2 text-sm text-red-500">{error?.message}</p>
+          )}
           <Button
             type="submit"
-            className="w-4/12 bg-gradient-to-r from-sky-700 to-sky-500 text-white disabled:cursor-not-allowed dark:text-white "
+            className="w-6/12 bg-gradient-to-r from-sky-700 to-sky-500 text-white disabled:cursor-not-allowed dark:text-white "
             disabled={
               JSON.stringify(autoFormParsedValues) !==
-                JSON.stringify(autoFormValues) || !files.length || loading
+                JSON.stringify(autoFormValues) ||
+              !files.length ||
+              loading
             }
           >
             Create Server

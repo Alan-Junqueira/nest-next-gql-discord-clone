@@ -8,30 +8,32 @@ import {
   TooltipTrigger,
 } from "./radix";
 import Image from "next/image";
+import Link from "next/link";
 
 interface INavbarLinkProps {
   imageUrl: string;
   label: string;
   active?: boolean;
-  onCLick?: () => void;
+  linkHref: string;
 }
 
-export const NavbarLink = ({
-  imageUrl,
-  label,
-  active,
-  onCLick,
-}: INavbarLinkProps) => {
+export const NavbarLink = ({ imageUrl, label, linkHref }: INavbarLinkProps) => {
   return (
     <TooltipProvider delayDuration={0}>
       <TooltipRoot>
         <TooltipTrigger asChild>
-          <button
-            className="overflow-hidden rounded-full border-2 border-transparent transition-all duration-200 ease-in hover:rounded-2xl hover:border-neutral-200 dark:hover:border-gray-700"
-            onClick={onCLick}
+          <Link
+            className="relative h-12 w-12 overflow-hidden rounded-full border-2 border-transparent transition-all duration-200 ease-in hover:rounded-2xl hover:border-neutral-200 dark:hover:border-gray-700"
+            href={linkHref}
           >
-            <Image src={imageUrl} width={50} height={50} alt={label} priority />
-          </button>
+            <Image
+              src={imageUrl}
+              fill
+              alt={label}
+              priority
+              className="object-cover"
+            />
+          </Link>
         </TooltipTrigger>
         <TooltipPortal>
           <TooltipContent

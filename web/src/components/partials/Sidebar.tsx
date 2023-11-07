@@ -83,7 +83,7 @@ export const Sidebar = ({ session, className, ...props }: ISidebarProps) => {
     <nav
       {...props}
       className={cn(
-        "fixed bottom-0 left-0 top-0 flex h-screen w-20 flex-col bg-gray-300 py-4 dark:bg-neutral-800",
+        "fixed bottom-0 left-0 top-0 flex h-screen w-20 flex-col border-r border-r-neutral-800/50 bg-gray-300 py-4 dark:border-r-neutral-400/50 dark:bg-neutral-800",
         className,
       )}
     >
@@ -98,14 +98,14 @@ export const Sidebar = ({ session, className, ...props }: ISidebarProps) => {
           <IconArrowsJoin className="h-10 w-10 rounded-full" />
         </Button>
       </div>
-      <div className="mt-8 mb-2 flex flex-col items-center justify-start gap-2 flex-1">
+      <div className="mb-2 mt-8 flex flex-1 flex-col items-center justify-start gap-2">
         {servers.map((server) => (
           <NavbarLink
             imageUrl={server.imageUrl}
             label={server.name}
             active={path === `/servers/${server.id}`}
             key={server.id}
-            onCLick={() => router.push(`/servers/${server.id}`)}
+            linkHref={`/servers/${server.id}`}
           />
         ))}
       </div>
