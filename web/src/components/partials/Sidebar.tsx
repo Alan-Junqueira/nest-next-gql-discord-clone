@@ -14,19 +14,24 @@ import { CREATE_PROFILE } from "@/graphql/mutations/CreateProfile";
 import { Session } from "next-auth";
 import { cn } from "@/lib/utils";
 import { useServers } from "@/hooks/graphql/server/useServers";
+import { usePathname, useRouter } from "next/navigation";
+import { NavbarLink } from "../NavbarLink";
+import path from "path";
 
 interface ISidebarProps extends ComponentProps<"nav"> {
   session: Session | null;
 }
 
 export const Sidebar = ({ session, className, ...props }: ISidebarProps) => {
+  const router = useRouter();
+  const path = usePathname();
+
   const [darkMode, toggleDarkMode] = useDarkModeStore((store) => [
     store.state.darkMode,
     store.actions.toggleDarkMode,
   ]);
 
   const { servers, loading: serversLoading } = useServers();
-  console.log(servers);
 
   const [profile, setProfile] = useProfileStore((state) => [
     state.state.profile,
@@ -92,6 +97,17 @@ export const Sidebar = ({ session, className, ...props }: ISidebarProps) => {
         >
           <IconArrowsJoin className="h-10 w-10 rounded-full" />
         </Button>
+      </div>
+      <div className="mt-8 mb-2 flex flex-col items-center justify-start gap-2 flex-1">
+        {servers.map((server) => (
+          <NavbarLink
+            imageUrl={server.imageUrl}
+            label={server.name}
+            active={path === `/servers/${server.id}`}
+            key={server.id}
+            onCLick={() => router.push(`/servers/${server.id}`)}
+          />
+        ))}
       </div>
       <div className="flex flex-col items-center justify-center">
         <Button
